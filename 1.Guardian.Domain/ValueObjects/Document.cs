@@ -1,12 +1,19 @@
+using FluentValidator;
+using FluentValidator.Validation;
+
 namespace Guardian.Domain.ValueObjects
 {
-    public class Document
+    public class Document : Notifiable
     {
         public string Number { get; private set; }
 
         public Document(string number)
         {
             Number = number;
+
+            AddNotifications(new ValidationContract()
+                .IsTrue(IsCpfValid(), "Document", "Documento inválido")
+            );
         }
 
         private bool IsCpfValid()
